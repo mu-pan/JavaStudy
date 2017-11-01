@@ -6,8 +6,10 @@ package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +25,15 @@ public class ReadFile {
 	 * @param file
 	 * @return seisanList
 	 */
-	protected List<String[]> readFile(File file) {
+	protected List<String[]> readFile(File file) throws UnsupportedEncodingException, FileNotFoundException {
 
 		List<String[]> seisanList = new ArrayList<String[]>();
 
+		// ①CSVを読み込む(文字コードの指定）
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "SJIS"));
+
 		try {
 
-			// ①CSVを読み込む(文字コードの指定）
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "SJIS"));
 			// CSV読み込み用
 			String line;
 			// ヘッダー行を読み込み
@@ -44,11 +47,16 @@ public class ReadFile {
 					seisanList.add(code);
 				}
 			}
-			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-
+			try {
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return seisanList;
 

@@ -26,7 +26,7 @@ public class CsvMargeMain {
 
 			ReadFile read = new ReadFile();
 			// CSVを格納するリスト
-			List<String[]> seisanList = read.readFile(file);
+			List<String[]> seisanList = null;//read.readFile(file);
 
 			// 明細データを部門単位でソート
 			Collections.sort(seisanList, new Comparator<String[]>() {
